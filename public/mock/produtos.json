@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "imagem": "/camera.svg",
+    "nome": "Câmera Full HD",
+    "pontos": 1500,
+    "ativo": true
+  },
+  {
+    "id": 2,
+    "imagem": "/fone.svg",
+    "nome": "Fone Bluetooth",
+    "pontos": 900,
+    "ativo": true
+  },
+  {
+    "id": 3,
+    "imagem": "/mochila.svg",
+    "nome": "Mochila Executiva",
+    "pontos": 1200,
+    "ativo": false
+  },
+  {
+    "id": 4,
+    "imagem": "/caneca.svg",
+    "nome": "Caneca Térmica",
+    "pontos": 700,
+    "ativo": true
+  },
+  {
+    "id": 5,
+    "imagem": "/relogio.svg",
+    "nome": "Relógio Digital",
+    "pontos": 2000,
+    "ativo": false
+  }
+]
