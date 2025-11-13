@@ -106,12 +106,12 @@ const deletarProduto = async (id) => {
   );
 
   return (
-    <div className="flex flex-col items-center gap-3 mt-6">
+    <div className="h-[450px] overflow-y-auto flex flex-col items-center gap-3 mt-6">
       {produtosFiltrados.length > 0 ? (
         produtosFiltrados.map((produto) => (
           <div
             key={produto.id}
-            className="flex flex-col md:flex-row justify-between items-start md:items-center w-[80%] px-4 py-3 border rounded-lg bg-[var(--branco)] shadow-sm"
+            className="flex flex-col md:flex-row justify-between items-start md:items-center w-[84%] px-4 py-3 border-b border-[var(--azulclaro)]  shadow-sm"
           >
             <div className="flex items-center gap-3 mb-2 md:mb-0">
               <img
@@ -125,9 +125,10 @@ const deletarProduto = async (id) => {
               </div>
             </div>
 
-            <span className="text-[var(--azulescuro)] font-semibold">{produto.valor} pts</span>
+            
 
             <div className="flex items-center gap-2 mt-2 md:mt-0">
+              <span className="text-[var(--azulescuro)] font-semibold mr-6">{produto.valor} pts</span>
               <Button
                 onClick={() => toggleAtivarProduto(produto.id, !produto.ativo)}
                 variant="primary"
