@@ -12,26 +12,37 @@ export default function Telalojapontos() {
   const [abaAtiva, setAbaAtiva] = useState("ativos");
   const [novoProduto, setNovoProduto] = useState({
     nome: "",
+    descricao: "",
     pontos: "",
     imagem: null,
   });
 
+  // Pegando token do localStorage
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+
   const modalnovoproduto = () => {
-    setNovoProduto({ nome: "", pontos: "", imagem: null });
+    setNovoProduto({ nome: "", pontos: "", descricao: "", imagem: null });
     setIsModalOpen(true);
   };
 
   const handleCriarProduto = async () => {
     try {
-      const token = localStorage.getItem("token");
+      if (!token) throw new Error("Token não encontrado");
 
-      const res = await fetch("/api/criarproduto", {
+      const payload = {
+        nome: novoProduto.nome,
+        descricao: novoProduto.descricao,
+        valor: Number(novoProduto.pontos), // converte string para número
+        fotoProduto: novoProduto.imagem || "", // garante que não seja null
+      };
+
+      const res = await fetch("/home/api/criarproduto", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(novoProduto),
+        body: JSON.stringify(payload),
       });
 
       const data = await res.json();
@@ -43,7 +54,7 @@ export default function Telalojapontos() {
 
       alert("Produto criado com sucesso!");
       setIsModalOpen(false);
-      setNovoProduto({ nome: "", pontos: "", imagem: null });
+      setNovoProduto({ nome: "", pontos: "", descricao: "", imagem: null });
     } catch (e) {
       console.error(e);
       alert("Erro ao criar produto");
@@ -52,7 +63,7 @@ export default function Telalojapontos() {
 
   return (
     <div className="p-8 flex flex-col">
-      <h1 className="text-3xl text-[var(--azulescuro)] font-bold text-center mb-8 p-8">
+      <h1 className="text-3xl text-[var(--azulescuro)] font-bold text-center mb-8">
         Loja de pontos
       </h1>
 
@@ -96,12 +107,14 @@ export default function Telalojapontos() {
         </a>
       </div>
 
+      {/* Aqui passamos o token para o Itensloja */}
       {abaAtiva === "ativos" ? (
-        <Itensloja tipo="ativos" searchTerm={searchTerm} />
+        <Itensloja tipo="ativos" searchTerm={searchTerm} token={token} />
       ) : (
-        <Itensloja tipo="inativos" searchTerm={searchTerm} />
+        <Itensloja tipo="inativos" searchTerm={searchTerm} token={token} />
       )}
 
+      {/* Modal de novo produto */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -123,6 +136,14 @@ export default function Telalojapontos() {
 
           <Input
             labelColor="azulescuro"
+            label="Descrição do produto"
+            colSpan="col-span-5"
+            value={novoProduto.descricao}
+            onChange={(e) => setNovoProduto({ ...novoProduto, descricao: e.target.value })}
+          />
+
+          <Input
+            labelColor="azulescuro"
             label="Pontos necessários"
             type="number"
             colSpan="col-span-3"
@@ -134,7 +155,7 @@ export default function Telalojapontos() {
             <CameraButton
               textolabel="Imagem Produto"
               labelcolor="azulescuro"
-              onImageChange={(base64) => setNovoProduto({ ...novoProduto, imagem: base64 })}
+              onImageChange={(url) => setNovoProduto({ ...novoProduto, imagem: url })}
             />
           </div>
 

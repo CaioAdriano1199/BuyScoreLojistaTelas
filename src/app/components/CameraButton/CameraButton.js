@@ -21,17 +21,14 @@ export default function CameraButton({
 const handleFileChange = (e) => {
   const file = e.target.files[0];
   if (file) {
-    const url = URL.createObjectURL(file);
+    const url = URL.createObjectURL(file); // URL temporária
     setSelectedImage(url);
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result;
-      onImageChange && onImageChange(base64String);
-    };
-    reader.readAsDataURL(file);
+    // Passa só o caminho/URL para o pai
+    onImageChange && onImageChange(url);
   }
 };
+
 
   const labelColors = {
     azulclaro: "text-[var(--azulclaro)]",
