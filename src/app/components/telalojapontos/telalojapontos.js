@@ -4,7 +4,7 @@ import Input from "../input/input";
 import Button from "../button/button";
 import Itensloja from "../itensloja/itensloja";
 import Modal from "../modal/modal";
-import CameraButton from "../cameraButton/CameraButton";
+import CameraButton from "../CameraButton/CameraButton";
 
 export default function Telalojapontos() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -107,7 +107,6 @@ export default function Telalojapontos() {
         </a>
       </div>
 
-      {/* Aqui passamos o token para o Itensloja */}
       {abaAtiva === "ativos" ? (
         <Itensloja tipo="ativos" searchTerm={searchTerm} token={token} />
       ) : (

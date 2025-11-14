@@ -1,17 +1,23 @@
-import { bffRequest } from "../../../lib/api";
-
 export async function POST(req) {
-  const body = await req.json();
-
   try {
-    const data = await bffRequest("/cadastro", {
+    const dados = await req.json();
+
+    const resposta = await fetch("http://localhost:3000/comercio", {
       method: "POST",
-      body: JSON.stringify(body),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dados),
     });
 
-    // Retorna o mesmo JSON do BFF pro front
-    return Response.json(data, { status: 200 });
+    const data = await resposta.json();
+
+    return Response.json(data, { status: resposta.status });
   } catch (error) {
-    return Response.json({ sucesso: false, mensagem: error.message }, { status: 500 });
+    console.error("Erro na rota do Next:", error);
+    return Response.json(
+      { mensagem: "Erro interno no Next.js" },
+      { status: 500 }
+    );
   }
 }

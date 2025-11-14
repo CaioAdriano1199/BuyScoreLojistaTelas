@@ -36,7 +36,10 @@ export default function Combobox({
         value={value}
         disableClearable
         options={options}
-        onChange={(event, newValue) => onChange?.(newValue?.value || "")}
+        onChange={(event, newValue) => onChange?.(newValue)}
+        getOptionLabel={(option) =>
+          typeof option === "string" ? option : option.label
+        }
         size="small"
         className={className}
         sx={{

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Button from "../button/button";
-import CameraButton from "../cameraButton/CameraButton";
+import CameraButton from "../CameraButton/CameraButton";
 import Modal from "../modal/modal";
 import Input from "../input/input";
 import { bffRequest } from "../../../lib/api";
