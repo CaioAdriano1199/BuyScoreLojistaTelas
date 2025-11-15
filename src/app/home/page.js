@@ -4,6 +4,7 @@ import Sidemenu from "../components/sidemenu/sidemenu";
 import Telapontuacao from "../components/telapontuacao/telapontuacao";
 import Telaestatistica from "../components/telaestatistica/telaestatistica";
 import Telalojapontos from "../components/telalojapontos/telalojapontos";
+import Telaperfil from "../components/telaperfil/telaperfil";
 
 export default function Page() {
   const [currentView, setCurrentView] = useState("pontuacao");
@@ -20,6 +21,8 @@ export default function Page() {
         return <Telaestatistica />;
       case "Loja de pontos":  
         return <Telalojapontos />;
+        case "perfil":
+          return <Telaperfil/>;
       default:
         return <Telapontuacao />;
     }

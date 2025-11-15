@@ -172,7 +172,7 @@ export default function CadastroForm() {
       <div className="flex justify-center items-center col-span-4">
         <CameraButton
           textolabel="Foto do Responsável"
-          onImageChange={(url) => setfotoUsuario(url)} // agora recebe URL
+          onImageChange={(url) => setfotoUsuario(url)}
         />
       </div>
 
