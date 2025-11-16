@@ -6,10 +6,11 @@ import Modal from "../modal/modal";
 import Input from "../input/input";
 import { bffRequest } from "../../../lib/api";
 
-export default function Itensloja({ tipo, searchTerm, token }) {
+export default function Itensloja({ tipo, searchTerm, token}) {
   const [produtos, setProdutos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
+
 
   // Carrega produtos via BFF
   const carregarProdutos = async () => {

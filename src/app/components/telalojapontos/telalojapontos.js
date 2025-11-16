@@ -10,6 +10,7 @@ export default function Telalojapontos() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [abaAtiva, setAbaAtiva] = useState("ativos");
+  const [reloadKey, setReloadKey] = useState(0);
   const [novoProduto, setNovoProduto] = useState({
     nome: "",
     descricao: "",
@@ -17,8 +18,8 @@ export default function Telalojapontos() {
     imagem: null,
   });
 
-  // Pegando token do localStorage
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   const modalnovoproduto = () => {
     setNovoProduto({ nome: "", pontos: "", descricao: "", imagem: null });
@@ -32,8 +33,8 @@ export default function Telalojapontos() {
       const payload = {
         nome: novoProduto.nome,
         descricao: novoProduto.descricao,
-        valor: Number(novoProduto.pontos), // converte string para número
-        fotoProduto: novoProduto.imagem || "", // garante que não seja null
+        valor: Number(novoProduto.pontos),
+        fotoProduto: novoProduto.imagem || "", // aqui já está em base64
       };
 
       const res = await fetch("/home/api/criarproduto", {
@@ -55,6 +56,7 @@ export default function Telalojapontos() {
       alert("Produto criado com sucesso!");
       setIsModalOpen(false);
       setNovoProduto({ nome: "", pontos: "", descricao: "", imagem: null });
+      setReloadKey(prev => prev + 1);
     } catch (e) {
       console.error(e);
       alert("Erro ao criar produto");
@@ -94,7 +96,9 @@ export default function Telalojapontos() {
         >
           Itens Ativos
         </a>
+
         <span className="text-gray-400">/</span>
+
         <a
           onClick={() => setAbaAtiva("inativos")}
           className={`cursor-pointer font-semibold transition ${
@@ -106,14 +110,14 @@ export default function Telalojapontos() {
           Itens Inativos
         </a>
       </div>
-
+<div key={reloadKey}>
       {abaAtiva === "ativos" ? (
-        <Itensloja tipo="ativos" searchTerm={searchTerm} token={token} />
+        <Itensloja tipo="ativos" searchTerm={searchTerm} token={token}  />
       ) : (
-        <Itensloja tipo="inativos" searchTerm={searchTerm} token={token} />
+        <Itensloja tipo="inativos" searchTerm={searchTerm} token={token}/>
       )}
-
-      {/* Modal de novo produto */}
+</div>
+      {/* Modal */}
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -130,7 +134,9 @@ export default function Telalojapontos() {
             label="Nome do produto"
             colSpan="col-span-5"
             value={novoProduto.nome}
-            onChange={(e) => setNovoProduto({ ...novoProduto, nome: e.target.value })}
+            onChange={(e) =>
+              setNovoProduto({ ...novoProduto, nome: e.target.value })
+            }
           />
 
           <Input
@@ -138,7 +144,9 @@ export default function Telalojapontos() {
             label="Descrição do produto"
             colSpan="col-span-5"
             value={novoProduto.descricao}
-            onChange={(e) => setNovoProduto({ ...novoProduto, descricao: e.target.value })}
+            onChange={(e) =>
+              setNovoProduto({ ...novoProduto, descricao: e.target.value })
+            }
           />
 
           <Input
@@ -147,14 +155,18 @@ export default function Telalojapontos() {
             type="number"
             colSpan="col-span-3"
             value={novoProduto.pontos}
-            onChange={(e) => setNovoProduto({ ...novoProduto, pontos: e.target.value })}
+            onChange={(e) =>
+              setNovoProduto({ ...novoProduto, pontos: e.target.value })
+            }
           />
 
           <div className="flex items-center col-span-3">
             <CameraButton
               textolabel="Imagem Produto"
               labelcolor="azulescuro"
-              onImageChange={(url) => setNovoProduto({ ...novoProduto, imagem: url })}
+              onImageChange={(base64) =>
+                setNovoProduto({ ...novoProduto, imagem: base64 })
+              }
             />
           </div>
 

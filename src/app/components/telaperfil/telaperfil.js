@@ -214,8 +214,8 @@ export default function Telaperfil() {
                             textolabel="Logo da loja"
                             labelcolor="azulescuro"
                             initialImage={lojista.fotoUsuario}
-                            onImageChange={(novaImagem) =>
-                                setlojista({ ...lojista, fotoUsuario: novaImagem })
+                            onImageChange={(base64) =>
+                                setlojista({ ...lojista, fotoUsuario: base64 })
                             }
                         />
                     </div>
