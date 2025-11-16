@@ -11,59 +11,31 @@ import {
 } from "recharts";
 import Combobox from "../combobox/combobox";
 
-export default function GraficoColuna({ tipo }) {
+export default function GraficoColuna({ titulo, dataKey, url }) {
   const [anoSelecionado, setAnoSelecionado] = useState("2025");
   const [dados, setDados] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const mesesBase = [
-    "Jan", "Fev", "Mar", "Abr", "Mai", "Jun",
-    "Jul", "Ago", "Set", "Out", "Nov", "Dez"
+    "Jan","Fev","Mar","Abr","Mai","Jun",
+    "Jul","Ago","Set","Out","Nov","Dez"
   ];
 
-  let titulo = "";
-  let dataKey = "";
-
-  switch (tipo) {
-    case "pontos":
-      titulo = "Pontos Acumulados";
-      dataKey = "pontos";
-      break;
-    case "clientes":
-      titulo = "Clientes Pontuando";
-      dataKey = "clientes";
-      break;
-    case "itens":
-      titulo = "Itens Resgatados";
-      dataKey = "itens";
-      break;
-    default:
-      titulo = "";
-      dataKey = "";
-  }
-
-  // 🔄 Atualiza dados quando muda tipo ou ano
   useEffect(() => {
     async function buscarDados() {
       setLoading(true);
       try {
-        // Aqui depois você troca pela sua API real:
-        // const response = await fetch(`/api/estatisticas?tipo=${tipo}&ano=${anoSelecionado}`);
-        // const json = await response.json();
+        const response = await fetch(`${url}?ano=${anoSelecionado}`);
+        const json = await response.json();
 
-        // Mock temporário (simula resposta da API):
-        const json = {
-          dados: Array(12)
-            .fill(0)
-            .map((_, i) => ({
-              mes: mesesBase[i],
-              valor: Math.floor(Math.random() * 500), // números aleatórios só pra simular
-            })),
-        };
+        const mapaMes = {};
+        json.dados.forEach(item => {
+          mapaMes[item.mes] = item.valor;
+        });
 
         const formatado = mesesBase.map((mes, i) => ({
           nome: mes,
-          [dataKey]: json.dados[i]?.valor ?? 0,
+          [dataKey]: mapaMes[i + 1] ?? 0,
         }));
 
         setDados(formatado);
@@ -75,7 +47,7 @@ export default function GraficoColuna({ tipo }) {
     }
 
     buscarDados();
-  }, [tipo, anoSelecionado]);
+  }, [anoSelecionado]);
 
   return (
     <div className="w-full h-full bg-[var(--branco)] p-4 shadow-md flex flex-col">
