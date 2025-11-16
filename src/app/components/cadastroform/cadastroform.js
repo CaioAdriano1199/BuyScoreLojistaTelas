@@ -153,7 +153,7 @@ export default function CadastroForm() {
         label="Bairro"
         value={bairro}
         onChange={(e) => setBairro(e.target.value)}
-        colSpan="col-span-2"
+        colSpan="col-span-3"
       />
       <Input
         label="Cidade"
@@ -169,12 +169,12 @@ export default function CadastroForm() {
         colSpan="col-span-1"
       />
 
-      <div className="flex justify-center items-center col-span-4">
-        <CameraButton
-          textolabel="Foto do Responsável"
-          onImageChange={(base64) => setfotoUsuario(base64)}
-        />
-      </div>
+<div className="col-span-3 flex justify-center">
+  <CameraButton
+    textolabel="Foto do Responsável"
+    onImageChange={(base64) => setfotoUsuario(base64)}
+  />
+</div>
 
       <div className="col-span-6 flex justify-center">
         <Button type="submit" variant="primary" className="w-1/2">

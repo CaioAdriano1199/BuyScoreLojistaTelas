@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Card from "../card/card";
 import Button from "../button/button";
@@ -9,10 +9,41 @@ import Input from "../input/input";
 import Combobox from "../combobox/combobox";
 import { top100Films, ufs } from "../combobox/comboboxdata";
 
-/*  */
+async function atualizarComercio(comercioAtualizado) {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch("http://localhost:3000/comercio", {
+        method: "PUT",
+        headers: {
+            Authorization: token,
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(comercioAtualizado),
+    });
+
+    const data = await response.json();
+    return data;
+}
+
+
+async function buscarMeuComercio() {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch("http://localhost:3000/comercio", {
+        method: "GET",
+        headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+        }
+    });
+
+    const data = await response.json();
+    return data;
+}
+
 
 export default function Telaperfil() {
-    const [lojista, setlojista] = useState([]);
+    const [lojista, setlojista] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const router = useRouter();
 
@@ -25,68 +56,76 @@ export default function Telaperfil() {
         router.push("/login");
     };
 
+    useEffect(() => {
+        buscarMeuComercio().then((res) => {
+            if (res.sucesso) {
+                setlojista(res.comercio);
+            }
+        });
+    }, []);
+
     return (
         <div className="p-8 flex items-center justify-center w-full flex-col">
             <h1 className="text-4xl font-bold mb-4 text-[var(--azulescuro)] p-4">Perfil</h1>
             <Card className="bg-[var(--branco)] w-[80%] grid grid-cols-6 gap-4 p-4 space-y-4">
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Razão Social</span>
                     <span className="text-[var(--azulclaro)]">{lojista.razaoSocial}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className=" flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Seguimento</span>
                     <span className="text-[var(--azulclaro)]">{lojista.seguimento}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Nome</span>
                     <span className="text-[var(--azulclaro)]">{lojista.nome}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Email</span>
                     <span className="text-[var(--azulclaro)]">{lojista.email}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">CEP</span>
                     <span className="text-[var(--azulclaro)]">{lojista.cep}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Logradouro</span>
                     <span className="text-[var(--azulclaro)]">{lojista.logradouro}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Complemento</span>
                     <span className="text-[var(--azulclaro)]">{lojista.complemento}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Bairro</span>
                     <span className="text-[var(--azulclaro)]">{lojista.bairro}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Cidade</span>
                     <span className="text-[var(--azulclaro)]">{lojista.cidade}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Número</span>
                     <span className="text-[var(--azulclaro)]">{lojista.numero}</span>
                 </div>
 
-                <div className="col-span-3">
+                <div className="flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">UF</span>
                     <span className="text-[var(--azulclaro)]">{lojista.uf}</span>
                 </div>
 
                 <div className="col-span-6">
                     <span className="text-[var(--azulescuro)]">Foto</span>
-                    <img src={lojista.fotoUsuario} alt={lojista.nome} className="w-20 h-20 rounded-full mt-2" />
+                    <img src={lojista.fotoUsuario} alt={lojista.nome} className="w-20 h-20 rounded-[6] mt-2" />
                 </div>
             </Card>
 
@@ -118,11 +157,11 @@ export default function Telaperfil() {
 
                     {/* NICHO LOJA */}
                     <Combobox
-                        label="Nicho da Loja"
+                        label="seguimento"
                         labelcolor="var(--azulescuro)"
                         options={top100Films}
-                        value={lojista.nichoLoja}
-                        onChange={(value) => setlojista({ ...lojista, nichoLoja: value })}
+                        value={lojista.seguimento}
+                        onChange={(value) => setlojista({ ...lojista, seguimento: value })}
                         colSpan="col-span-3"
                     />
 
@@ -221,9 +260,29 @@ export default function Telaperfil() {
                     </div>
                 </div>
 
-                <Button type="button" variant="primary" className="mt-4 w-full">
+                <Button
+                    type="button"
+                    variant="primary"
+                    className="mt-4 w-full"
+                    onClick={async () => {
+                        try {
+                            const res = await atualizarComercio(lojista);
+                            if (res.sucesso) {
+                                setlojista(res.comercio); 
+                                setIsModalOpen(false);    
+                                alert("Perfil atualizado com sucesso!");
+                            } else {
+                                alert(res.mensagem || "Erro ao atualizar o comércio");
+                            }
+                        } catch (err) {
+                            console.error(err);
+                            alert("Erro de comunicação com o servidor");
+                        }
+                    }}
+                >
                     Salvar
                 </Button>
+
             </Modal>
 
         </div>

@@ -66,71 +66,70 @@ const compressImage = (file, maxSize = 800, quality = 0.7) => {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <label
-        className={`block mb-1 text-sm font-medium ${
-          labelColors[labelcolor] || labelColors.branco
-        } flex self-start`}
-      >
-        {textolabel}
-      </label>
+<div className="flex flex-col items-center w-full">
+  <label
+    className={`block mb-2 text-sm font-medium ${labelColors[labelcolor] || labelColors.branco} text-center w-full`}
+  >
+    {textolabel}
+  </label>
 
-      <Button
-        type="button"
-        onClick={() => fileInputRef.current.click()}
-        variant="outline"
-        className="w-32 h-32 rounded-[10] flex items-center justify-center overflow-hidden bg-gray-100 hover:bg-gray-200"
-      >
-        {selectedImage ? (
-          <Image
-            src={selectedImage}
-            alt="Imagem selecionada"
-            width={128}
-            height={128}
-            className="object-cover w-full h-full"
-          />
-        ) : (
-          <Image
-            src="/camera.svg"
-            alt="Ícone de câmera"
-            width={40}
-            height={40}
-            className="opacity-70"
-          />
-        )}
-      </Button>
-
-      {/* URL manual */}
-      <input
-        type="text"
-        placeholder="Cole o link da imagem"
-        value={selectedImage || ""}
-        onChange={(e) => {
-          setSelectedImage(e.target.value);
-          onImageChange && onImageChange(e.target.value);
-        }}
-        className="border p-2 mt-2 w-full rounded"
+  <Button
+    type="button"
+    onClick={() => fileInputRef.current.click()}
+    variant="outline"
+    className="w-32 h-32 rounded-[10] flex items-center justify-center overflow-hidden bg-gray-100 hover:bg-gray-200"
+  >
+    {selectedImage ? (
+      <Image
+        src={selectedImage}
+        alt="Imagem selecionada"
+        width={128}
+        height={128}
+        className="object-cover w-full h-full"
       />
-
-      {/* INPUT DE IMAGEM */}
-      <input
-        type="file"
-        accept="image/*"
-        ref={fileInputRef}
-        onChange={async (e) => {
-          const file = e.target.files[0];
-          if (file) {
-            // Comprimir e converter para Base64
-            const base64 = await compressImage(file);
-
-            setSelectedImage(base64);
-
-            // Retorna a imagem comprimida em Base64
-            onImageChange && onImageChange(base64);
-          }
-        }}
-        className="hidden"
+    ) : (
+      <Image
+        src="/camera.svg"
+        alt="Ícone de câmera"
+        width={40}
+        height={40}
+        className="opacity-70"
       />
-    </div>
+    )}
+  </Button>
+
+  {/* URL manual */}
+  <input
+    type="text"
+    placeholder="Cole o link da imagem"
+    value={selectedImage || ""}
+    onChange={(e) => {
+      setSelectedImage(e.target.value);
+      onImageChange && onImageChange(e.target.value);
+    }}
+    className=" p-2 mt-2 w-full rounded text-center bg-[var(--branco)]"
+  />
+
+  {/* INPUT DE IMAGEM */}
+  <input
+    type="file"
+    accept="image/*"
+    ref={fileInputRef}
+    onChange={async (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        // Comprimir e converter para Base64
+        const base64 = await compressImage(file);
+
+        setSelectedImage(base64);
+
+        // Retorna a imagem comprimida em Base64
+        onImageChange && onImageChange(base64);
+      }
+    }}
+    className="hidden"
+  />
+</div>
+
   );
 }
