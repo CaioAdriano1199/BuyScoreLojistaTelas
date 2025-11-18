@@ -45,11 +45,18 @@ async function buscarMeuComercio() {
 export default function Telaperfil() {
     const [lojista, setlojista] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalmensagemOpen, setIsModalmensagemOpen] = useState(false);
+    const [mensagem, setMensagem] = useState("");
     const router = useRouter();
 
     const modaleditarperfil = (lojista) => {
         setIsModalOpen(true);
     };
+
+    function ConfAtt() {
+        setIsModalOpen(false);
+        isModalConfOpen(true);
+    }
 
     function logout() {
         localStorage.clear();
@@ -268,15 +275,18 @@ export default function Telaperfil() {
                         try {
                             const res = await atualizarComercio(lojista);
                             if (res.sucesso) {
-                                setlojista(res.comercio); 
-                                setIsModalOpen(false);    
-                                alert("Perfil atualizado com sucesso!");
+                                setlojista(res.comercio);
+                                setIsModalOpen(false);
+                                setMensagem("Perfil atualizado com sucesso!");
+                                setIsModalmensagemOpen(true);
                             } else {
-                                alert(res.mensagem || "Erro ao atualizar o comércio");
+                                setMensagem(res.mensagem || "Erro ao atualizar o comércio");
+                                setIsModalmensagemOpen(true);
                             }
                         } catch (err) {
                             console.error(err);
-                            alert("Erro de comunicação com o servidor");
+                            setMensagem("Erro de comunicação com o servidor");
+                            setIsModalmensagemOpen(true);
                         }
                     }}
                 >
@@ -284,7 +294,14 @@ export default function Telaperfil() {
                 </Button>
 
             </Modal>
-
+            <Modal
+                isOpen={isModalmensagemOpen}
+                onClose={() => setIsModalmensagemOpen(false)}
+                width="max-w-md"
+                className="bg-[var(--branco)] rounded-lg p-4"
+            >
+                <p className="text-center text-[var(--azulescuro)] text-lg">{mensagem}</p>
+            </Modal>
         </div>
 
     );

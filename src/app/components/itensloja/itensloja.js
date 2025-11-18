@@ -177,7 +177,7 @@ export default function Itensloja({ tipo, searchTerm, token }) {
       >
         {produtoSelecionado && (
           <div className="grid grid-cols-5 gap-2 auto-rows-max">
-            <h2 className="text-2xl text-[var(--azulescuro)] font-bold text-center col-span-5 mb-4">
+            <h2 className="cursor-default text-2xl text-[var(--azulescuro)] font-bold text-center col-span-5 mb-4">
               Editar Produto
             </h2>
 
