@@ -65,7 +65,7 @@ export default function LoginForm() {
         required
       />
 
-      <Button type="submit" variant="primary" disabled={lblock} className="w-full mt-2">
+      <Button type="submit" variant="primary" disabled={lblock} className={`w-full mt-2 ${lblock ? "cursor-not-allowed" : "cursor-pointer"}`}>
         {loading}
       </Button>
 
