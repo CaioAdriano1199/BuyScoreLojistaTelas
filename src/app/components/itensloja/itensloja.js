@@ -6,11 +6,12 @@ import Modal from "../modal/modal";
 import Input from "../input/input";
 import { bffRequest } from "../../../lib/api";
 
-export default function Itensloja({ tipo, searchTerm, token}) {
+export default function Itensloja({ tipo, searchTerm, token }) {
   const [produtos, setProdutos] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalmensagemOpen, setIsModalmensagemOpen] = useState(false);
   const [produtoSelecionado, setProdutoSelecionado] = useState(null);
-
+  const [mensagem, setMensagem] = useState("");
 
   // Carrega produtos via BFF
   const carregarProdutos = async () => {
@@ -27,30 +28,35 @@ export default function Itensloja({ tipo, searchTerm, token}) {
     }
   };
 
-  // Atualizar produto
-const atualizarProduto = async (produtoAtualizado) => {
-  try {
-    await fetch("/home/api/atualizarproduto", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(produtoAtualizado),
-    });
-
-    setProdutos((prev) =>
-      prev.map((p) => (p.id === produtoAtualizado.id ? produtoAtualizado : p))
-    );
-
-    alert("Produto atualizado com sucesso!");
+  // Mostrar modal de mensagem
+  function modalconfirma(msg) {
     setIsModalOpen(false);
-  } catch (error) {
-    console.error("Erro ao atualizar produto:", error);
-    alert(error.message || "Erro ao atualizar produto");
+    setMensagem(msg);
+    setIsModalmensagemOpen(true);
   }
-};
 
+  // Atualizar produto
+  const atualizarProduto = async (produtoAtualizado) => {
+    try {
+      await fetch("/home/api/atualizarproduto", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(produtoAtualizado),
+      });
+
+      setProdutos((prev) =>
+        prev.map((p) => (p.id === produtoAtualizado.id ? produtoAtualizado : p))
+      );
+
+      modalconfirma("Produto atualizado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao atualizar produto:", error);
+      modalconfirma(error.message || "Erro ao atualizar produto");
+    }
+  };
 
   // Ativar/Desativar produto
   const toggleAtivarProduto = async (id, ativar = true) => {
@@ -65,26 +71,25 @@ const atualizarProduto = async (produtoAtualizado) => {
       );
     } catch (error) {
       console.error("Erro ao alterar status do produto:", error);
-      alert(error.message || "Erro ao alterar status do produto");
+      modalconfirma(error.message || "Erro ao alterar status do produto");
     }
   };
 
   // Deletar produto
-const deletarProduto = async (id) => {
-  try {
-    await bffRequest(`/produto/${id}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+  const deletarProduto = async (id) => {
+    try {
+      await bffRequest(`/produto/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    setProdutos((prev) => prev.filter((p) => p.id !== id));
-    alert("Produto removido com sucesso!");
-  } catch (error) {
-    console.error("Erro ao excluir produto:", error);
-    alert(error.message || "Erro ao excluir produto");
-  }
-};
-
+      setProdutos((prev) => prev.filter((p) => p.id !== id));
+      modalconfirma("Produto removido com sucesso!");
+    } catch (error) {
+      console.error("Erro ao excluir produto:", error);
+      modalconfirma(error.message || "Erro ao excluir produto");
+    }
+  };
 
   const modaleditarproduto = (produto) => {
     setProdutoSelecionado(produto);
@@ -112,7 +117,7 @@ const deletarProduto = async (id) => {
         produtosFiltrados.map((produto) => (
           <div
             key={produto.id}
-            className="flex flex-col md:flex-row justify-between items-start md:items-center w-[84%] px-4 py-3 border-b border-[var(--azulclaro)]  shadow-sm"
+            className="flex flex-col md:flex-row justify-between items-start md:items-center w-[84%] px-4 py-3 border-b border-[var(--azulclaro)] shadow-sm"
           >
             <div className="flex items-center gap-3 mb-2 md:mb-0">
               <img
@@ -121,15 +126,18 @@ const deletarProduto = async (id) => {
                 className="w-12 h-12 object-cover rounded"
               />
               <div className="flex flex-col">
-                <span className="text-[var(--azulescuro)] font-semibold">{produto.nome}</span>
-                <span className="text-[var(--cinza)] text-sm">{produto.descricao}</span>
+                <span className="cursor-default text-[var(--azulescuro)] font-semibold">
+                  {produto.nome}
+                </span>
+                <span className="cursor-default text-[var(--cinza)] text-sm">{produto.descricao}</span>
               </div>
             </div>
 
-            
-
             <div className="flex items-center gap-2 mt-2 md:mt-0">
-              <span className="text-[var(--azulescuro)] font-semibold mr-6">{produto.valor} pts</span>
+              <span className="cursor-default text-[var(--azulescuro)] font-semibold mr-6">
+                {produto.valor} pts
+              </span>
+
               <Button
                 onClick={() => toggleAtivarProduto(produto.id, !produto.ativo)}
                 variant="primary"
@@ -179,7 +187,10 @@ const deletarProduto = async (id) => {
               colSpan="col-span-5"
               value={produtoSelecionado.nome}
               onChange={(e) =>
-                setProdutoSelecionado({ ...produtoSelecionado, nome: e.target.value })
+                setProdutoSelecionado({
+                  ...produtoSelecionado,
+                  nome: e.target.value,
+                })
               }
             />
 
@@ -189,7 +200,10 @@ const deletarProduto = async (id) => {
               colSpan="col-span-5"
               value={produtoSelecionado.descricao}
               onChange={(e) =>
-                setProdutoSelecionado({ ...produtoSelecionado, descricao: e.target.value })
+                setProdutoSelecionado({
+                  ...produtoSelecionado,
+                  descricao: e.target.value,
+                })
               }
             />
 
@@ -200,7 +214,10 @@ const deletarProduto = async (id) => {
               colSpan="col-span-3"
               value={produtoSelecionado.valor}
               onChange={(e) =>
-                setProdutoSelecionado({ ...produtoSelecionado, valor: Number(e.target.value) })
+                setProdutoSelecionado({
+                  ...produtoSelecionado,
+                  valor: Number(e.target.value),
+                })
               }
             />
 
@@ -210,7 +227,10 @@ const deletarProduto = async (id) => {
                 labelcolor="azulescuro"
                 initialImage={produtoSelecionado.fotoProduto}
                 onImageChange={(novaImagem) =>
-                  setProdutoSelecionado({ ...produtoSelecionado, fotoProduto: novaImagem })
+                  setProdutoSelecionado({
+                    ...produtoSelecionado,
+                    fotoProduto: novaImagem,
+                  })
                 }
               />
             </div>
@@ -224,6 +244,16 @@ const deletarProduto = async (id) => {
             </Button>
           </div>
         )}
+      </Modal>
+
+      {/* Modal de mensagem */}
+      <Modal
+        isOpen={isModalmensagemOpen}
+        onClose={() => setIsModalmensagemOpen(false)}
+        width="max-w-md"
+        className="bg-[var(--branco)] rounded-lg p-4"
+      >
+        <p className="text-center text-[var(--azulescuro)] text-lg">{mensagem}</p>
       </Modal>
     </div>
   );

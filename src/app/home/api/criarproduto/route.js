@@ -22,7 +22,7 @@ export async function POST(req) {
       JSON.stringify({
         sucesso: true,
         produto: produtoCriado,
-        mensagem: "Produto criado com sucesso",
+        
       }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );

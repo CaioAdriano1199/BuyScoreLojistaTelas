@@ -6,6 +6,7 @@ import Button from "../button/button";
 import Combobox from "../combobox/combobox";
 import { top100Films, ufs } from "../combobox/comboboxdata";
 import CameraButton from "../CameraButton/CameraButton";
+import Modal from "../modal/modal";
 
 export default function CadastroForm() {
   const [razaoSocial, setRazaoSocial] = useState("");
@@ -23,6 +24,7 @@ export default function CadastroForm() {
   const [numero, setNumero] = useState("");
   const [cidade, setCidade] = useState("");
   const [estado, setEstado] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const router = useRouter();
 
@@ -37,13 +39,13 @@ export default function CadastroForm() {
     const payload = {
       cnpj,
       razaoSocial,
-      descricao: nichoLoja?.label || nichoLoja || "", 
-      seguimento: nichoLoja?.label || nichoLoja || "",  
+      descricao: nichoLoja?.label || nichoLoja || "",
+      seguimento: nichoLoja?.label || nichoLoja || "",
       nome,
       email,
       senha,
-      perfilUsuario: 1,            
-      fotoUsuario,                 
+      perfilUsuario: 1,
+      fotoUsuario,
       cep,
       logradouro,
       complemento,
@@ -67,16 +69,21 @@ export default function CadastroForm() {
         return;
       }
 
-      alert("Comércio criado com sucesso!");
-      router.push("/login");
+      setIsModalOpen(true);
     } catch (err) {
       console.error(err);
       alert("Erro ao criar comércio");
     }
   };
 
+  function paralogin(){
+    setIsModalOpen(false);
+    router.push("/login");
+  }
+
   return (
     <form className="grid grid-cols-6 gap-4" onSubmit={handleSubmit}>
+      <h1 className="col-span-6 cursor-default text-3xl font-semibold text-center mb-2 text-[rgb(227,227,227)]">Cadastro</h1>
       <Input
         label="Razão Social"
         value={razaoSocial}
@@ -169,12 +176,12 @@ export default function CadastroForm() {
         colSpan="col-span-1"
       />
 
-<div className="col-span-3 flex justify-center">
-  <CameraButton
-    textolabel="Foto do Responsável"
-    onImageChange={(base64) => setfotoUsuario(base64)}
-  />
-</div>
+      <div className="col-span-3 flex justify-center">
+        <CameraButton
+          textolabel="Foto do Responsável"
+          onImageChange={(base64) => setfotoUsuario(base64)}
+        />
+      </div>
 
       <div className="col-span-6 flex justify-center">
         <Button type="submit" variant="primary" className="w-1/2">
@@ -182,12 +189,26 @@ export default function CadastroForm() {
         </Button>
       </div>
 
-      <p className="text-sm text-center mt-2 text-[rgb(227,227,227)] col-span-6">
+      <p className="cursor-default text-sm text-center mt-2 text-[rgb(227,227,227)] col-span-6">
         Já possui uma conta? Realize o login{" "}
         <a href="/login" className="underline font-semibold">
           aqui!
         </a>
       </p>
+
+      <Modal isOpen={isModalOpen}
+        onClose={() => paralogin()}
+        width="max-w-md"
+        className="bg-white rounded-lg"
+      >
+        <div className="flex justify-center items-center py-8">
+          <span className="text-2xl text-[var(--azulescuro)]">
+            Cadastro Realizado com Sucesso!
+          </span>
+        </div>
+      </Modal>
     </form>
+
+
   );
 }

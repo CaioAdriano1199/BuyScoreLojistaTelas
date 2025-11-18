@@ -66,65 +66,65 @@ export default function Telaperfil() {
 
     return (
         <div className="p-8 flex items-center justify-center w-full flex-col">
-            <h1 className="text-4xl font-bold mb-4 text-[var(--azulescuro)] p-4">Perfil</h1>
+            <h1 className="cursor-default text-4xl font-bold mb-4 text-[var(--azulescuro)] p-4">Perfil</h1>
             <Card className="bg-[var(--branco)] w-[80%] grid grid-cols-6 gap-4 p-4 space-y-4">
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Razão Social</span>
                     <span className="text-[var(--azulclaro)]">{lojista.razaoSocial}</span>
                 </div>
 
-                <div className=" flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Seguimento</span>
                     <span className="text-[var(--azulclaro)]">{lojista.seguimento}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Nome</span>
                     <span className="text-[var(--azulclaro)]">{lojista.nome}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Email</span>
                     <span className="text-[var(--azulclaro)]">{lojista.email}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">CEP</span>
                     <span className="text-[var(--azulclaro)]">{lojista.cep}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Logradouro</span>
                     <span className="text-[var(--azulclaro)]">{lojista.logradouro}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Complemento</span>
                     <span className="text-[var(--azulclaro)]">{lojista.complemento}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Bairro</span>
                     <span className="text-[var(--azulclaro)]">{lojista.bairro}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Cidade</span>
                     <span className="text-[var(--azulclaro)]">{lojista.cidade}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">Número</span>
                     <span className="text-[var(--azulclaro)]">{lojista.numero}</span>
                 </div>
 
-                <div className="flex flex-col col-span-3">
+                <div className="cursor-default flex flex-col col-span-3">
                     <span className="text-[var(--azulescuro)]">UF</span>
                     <span className="text-[var(--azulclaro)]">{lojista.uf}</span>
                 </div>
 
                 <div className="col-span-6">
-                    <span className="text-[var(--azulescuro)]">Foto</span>
+                    <span className="cursor-default text-[var(--azulescuro)]">Foto</span>
                     <img src={lojista.fotoUsuario} alt={lojista.nome} className="w-20 h-20 rounded-[6] mt-2" />
                 </div>
             </Card>

@@ -37,7 +37,7 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-      <h1 className="text-3xl font-semibold text-center mb-2 text-[rgb(227,227,227)]">Login</h1>
+      <h1 className="cursor-default text-3xl font-semibold text-center mb-2 text-[rgb(227,227,227)]">Login</h1>
 
       <Input
         label="Email"
@@ -61,9 +61,9 @@ export default function LoginForm() {
         Login
       </Button>
 
-      <p className="text-sm text-center mt-2 text-[rgb(227,227,227)]">
+      <p className="cursor-default text-sm text-center mt-2 text-[rgb(227,227,227)]">
         Não tem conta? cadastre-se{" "}
-        <a href="/cadastro" className="underline font-semibold">
+        <a href="/cadastro" className="cursor-pointer underline font-semibold">
            aqui!
         </a>
       </p>

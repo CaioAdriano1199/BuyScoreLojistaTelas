@@ -11,6 +11,8 @@ export default function Telalojapontos() {
   const [searchTerm, setSearchTerm] = useState("");
   const [abaAtiva, setAbaAtiva] = useState("ativos");
   const [reloadKey, setReloadKey] = useState(0);
+  const [mensagem, setMensagem] = useState("");
+  const [isModalmensagemOpen, setIsModalmensagemOpen] = useState(false);
   const [novoProduto, setNovoProduto] = useState({
     nome: "",
     descricao: "",
@@ -25,6 +27,12 @@ export default function Telalojapontos() {
     setNovoProduto({ nome: "", pontos: "", descricao: "", imagem: null });
     setIsModalOpen(true);
   };
+
+  function modalconfirma(msg) {
+    setIsModalOpen(false);
+    setMensagem(msg);
+    setIsModalmensagemOpen(true);
+  }
 
   const handleCriarProduto = async () => {
     try {
@@ -49,23 +57,23 @@ export default function Telalojapontos() {
       const data = await res.json();
 
       if (!res.ok) {
-        alert(data?.mensagem ?? "Erro ao criar produto");
+        modalconfirma(data?.mensagem ?? "Erro ao criar produto");
         return;
       }
 
-      alert("Produto criado com sucesso!");
+      modalconfirma("Produto criado com sucesso!");
       setIsModalOpen(false);
       setNovoProduto({ nome: "", pontos: "", descricao: "", imagem: null });
       setReloadKey(prev => prev + 1);
     } catch (e) {
       console.error(e);
-      alert("Erro ao criar produto");
+      modalconfirma("Erro ao criar produto");
     }
   };
 
   return (
     <div className="p-8 flex flex-col">
-      <h1 className="text-3xl text-[var(--azulescuro)] font-bold text-center mb-8">
+      <h1 className="cursor-default text-3xl text-[var(--azulescuro)] font-bold text-center mb-8">
         Loja de pontos
       </h1>
 
@@ -88,35 +96,33 @@ export default function Telalojapontos() {
       <div className="text-[var(--azulescuro)] border-b border-[var(--azulclaro)] w-full max-w-5xl mx-auto mb-4 pb-2 flex gap-2 justify-start">
         <a
           onClick={() => setAbaAtiva("ativos")}
-          className={`cursor-pointer font-semibold transition ${
-            abaAtiva === "ativos"
-              ? "text-[var(--azulescuro)]"
-              : "text-[var(--cinza)] hover:text-[var(--azulescuro)]"
-          }`}
+          className={`cursor-pointer font-semibold transition ${abaAtiva === "ativos"
+            ? "text-[var(--azulescuro)]"
+            : "text-[var(--cinza)] hover:text-[var(--azulescuro)]"
+            }`}
         >
           Itens Ativos
         </a>
 
-        <span className="text-gray-400">/</span>
+        <span className="text-gray-400 cursor-default">/</span>
 
         <a
           onClick={() => setAbaAtiva("inativos")}
-          className={`cursor-pointer font-semibold transition ${
-            abaAtiva === "inativos"
-              ? "text-[var(--azulescuro)]"
-              : "text-[var(--cinza)] hover:text-[var(--azulescuro)]"
-          }`}
+          className={`cursor-pointer font-semibold transition ${abaAtiva === "inativos"
+            ? "text-[var(--azulescuro)]"
+            : "text-[var(--cinza)] hover:text-[var(--azulescuro)]"
+            }`}
         >
           Itens Inativos
         </a>
       </div>
-<div key={reloadKey}>
-      {abaAtiva === "ativos" ? (
-        <Itensloja tipo="ativos" searchTerm={searchTerm} token={token}  />
-      ) : (
-        <Itensloja tipo="inativos" searchTerm={searchTerm} token={token}/>
-      )}
-</div>
+      <div key={reloadKey}>
+        {abaAtiva === "ativos" ? (
+          <Itensloja tipo="ativos" searchTerm={searchTerm} token={token} />
+        ) : (
+          <Itensloja tipo="inativos" searchTerm={searchTerm} token={token} />
+        )}
+      </div>
       {/* Modal */}
       <Modal
         isOpen={isModalOpen}
@@ -125,7 +131,7 @@ export default function Telalojapontos() {
         className="bg-[var(--branco)] rounded-lg"
       >
         <div className="grid grid-cols-5 justify-start auto-rows-max gap-2">
-          <h2 className="text-2xl text-[var(--azulescuro)] font-bold text-center col-span-5 mb-4">
+          <h2 className="cursor-default text-2xl text-[var(--azulescuro)] font-bold text-center col-span-5 mb-4">
             Novo produto
           </h2>
 
@@ -178,6 +184,14 @@ export default function Telalojapontos() {
             Adicionar Produto
           </Button>
         </div>
+      </Modal>
+      <Modal
+        isOpen={isModalmensagemOpen}
+        onClose={() => setIsModalmensagemOpen(false)}
+        width="max-w-md"
+        className="bg-[var(--branco)] rounded-lg p-4"
+      >
+        <p className="text-center text-[var(--azulescuro)] text-lg">{mensagem}</p>
       </Modal>
     </div>
   );

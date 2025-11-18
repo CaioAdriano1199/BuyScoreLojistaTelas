@@ -21,12 +21,12 @@ export default function Button({
 
   const variants = {
     primary:
-      "bg-[var(--azulescuro)] font-medium rounded-md text-[var(--branco)] hover:bg-[var(--azulclaro)] focus:ring-blue-500 mx-auto block",
+      "cursor-pointer bg-[var(--azulescuro)] border-[var(--azulescuro)] border-2 font-medium rounded-md text-[var(--branco)] hover:bg-[var(--azulclaro)] focus:ring-blue-500 mx-auto block",
     secondary:
-      "bg-[var(--azulclaro)] text-2xl text-[var(--branco)] hover:bg-[var(--branco)] hover:text-[var(--azulclaro)] w-full",
-    terciary: "border-none bg-[var(--azulescuro)] text-1xl text-[var(--branco)] hover:bg-[var(--branco)] hover:text-[var(--azulescuro)] w-full",
-    quadruple: "border-none bg-[var(--branco)] text-1xl text-[var(--azulescuro)] w-full",
-    exit:"bg-[var(--vermelho)] font-medium rounded-md text-[var(--branco)] hover:bg-[var(--branco)] hover:text-[var(--vermelho)] focus:ring-blue-500 mx-auto block",
+      "cursor-pointer bg-[var(--azulclaro)] text-2xl text-[var(--branco)] hover:bg-[var(--branco)] hover:text-[var(--azulclaro)] w-full",
+    terciary: "cursor-pointer border-none bg-[var(--azulescuro)] text-1xl text-[var(--branco)] hover:bg-[var(--branco)] hover:text-[var(--azulescuro)] w-full",
+    quadruple: "cursor-pointer border-none bg-[var(--branco)] text-1xl text-[var(--azulescuro)] w-full",
+    exit:"cursor-pointer bg-[var(--vermelho)] font-medium rounded-md text-[var(--branco)] hover:bg-[var(--branco)] hover:text-[var(--vermelho)] focus:ring-blue-500 mx-auto block",
 
     outline:
       "border border-gray-300 text-gray-700 hover:bg-gray-100",
