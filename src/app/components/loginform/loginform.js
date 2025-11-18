@@ -63,6 +63,7 @@ export default function LoginForm() {
         onChange={(e) => setSenha(e.target.value)}
         placeholder="Digite sua senha"
         required
+        
       />
 
       <Button type="submit" variant="primary" disabled={lblock} className={`w-full mt-2 ${lblock ? "cursor-not-allowed" : "cursor-pointer"}`}>
