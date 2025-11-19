@@ -178,7 +178,7 @@ export default function CadastroForm() {
 
       <div className="col-span-3 flex justify-center">
         <CameraButton
-          textolabel="Foto do Responsável"
+          textolabel="Logo da Empresa"
           onImageChange={(base64) => setfotoUsuario(base64)}
         />
       </div>
