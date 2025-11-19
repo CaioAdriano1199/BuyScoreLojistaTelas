@@ -41,7 +41,7 @@ export default function Telapontuacao() {
 
   return (
     <div className="p-8 flex items-center justify-center w-full flex-col">
-      <h1 className="cursor-default text-4xl font-bold mb-4 text-[var(--azulescuro)] p-20">Tela de Pontuação</h1>
+      <h1 className="cursor-default text-4xl font-bold mb-4 text-[var(--azulescuro)] p-20">Pontuação</h1>
       <div className="mb-4 w-[26%]">
         <Input
           label="Valor da Compra"
