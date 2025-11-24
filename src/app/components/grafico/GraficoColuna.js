@@ -12,7 +12,8 @@ import {
 import Combobox from "../combobox/combobox";
 
 export default function GraficoColuna({ titulo, dataKey, url }) {
-  const [anoSelecionado, setAnoSelecionado] = useState("2025");
+  const [anoSelecionado, setAnoSelecionado] = useState("");
+  const [anosDisponiveis, setAnosDisponiveis] = useState([]);
   const [dados, setDados] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,74 +22,90 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
     "Jul","Ago","Set","Out","Nov","Dez"
   ];
 
-  useEffect(() => {
-    async function buscarDados() {
-      setLoading(true);
-      try {
-        const response = await fetch(`${url}?ano=${anoSelecionado}`);
-        const json = await response.json();
-
-        const mapaMes = {};
-        json.dados.forEach(item => {
-          mapaMes[item.mes] = item.valor;
-        });
-
-        const formatado = mesesBase.map((mes, i) => ({
-          nome: mes,
-          [dataKey]: mapaMes[i + 1] ?? 0,
-        }));
-
-        setDados(formatado);
-      } catch (err) {
-        console.error("Erro ao buscar dados:", err);
-      } finally {
-        setLoading(false);
-      }
+  // 🔹 Carregar anos disponíveis
+useEffect(() => {
+  async function carregarAnos() {
+    try {
+      const token = localStorage.getItem("token");
+      const r = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const lista = await r.json();
+      const anos = [...new Set(lista.map((d) => d.ano))];
+      setAnosDisponiveis(anos.map(a => a.toString()));
+      if (anos.length > 0) setAnoSelecionado(anos[0]);
+    } catch (err) {
+      console.error("Erro ao carregar anos:", err);
     }
+  }
+  carregarAnos();
+}, [url]);
 
-    buscarDados();
-  }, [anoSelecionado]);
+  // 🔹 Carregar dados ao trocar ano
+useEffect(() => {
+  if (!anoSelecionado) return;
+
+  async function carregarDados() {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("token");
+      const r = await fetch(url, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const lista = await r.json();
+
+      const filtrado = lista.filter(item => item.ano == anoSelecionado);
+      const mapaMes = {};
+      filtrado.forEach(item => { mapaMes[item.mes] = item[dataKey] ?? 0 });
+
+      const formatado = mesesBase.map((mes, i) => ({
+        nome: mes,
+        [dataKey]: mapaMes[i + 1] ?? 0,
+      }));
+      setDados(formatado);
+    } catch (e) {
+      console.error("Erro ao carregar dados:", e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+    carregarDados();
+  }, [anoSelecionado, url]);
 
   return (
-    <div className="w-full h-full bg-[var(--branco)] p-4 shadow-md flex flex-col">
+    <div className="w-full h-[400px] bg-[var(--branco)] p-4 shadow-md flex flex-col rounded-xl">
       <h2 className="text-[var(--azulescuro)] text-xl font-semibold mb-4 text-center">
         {titulo}
       </h2>
 
       <Combobox
         label="Ano"
-        labelcolor={"var(--azulescuro)"}
         value={anoSelecionado}
         onChange={(novoAno) => setAnoSelecionado(novoAno)}
-        options={[
-          { label: "2023", value: "2023" },
-          { label: "2024", value: "2024" },
-          { label: "2025", value: "2025" },
-        ]}
-        className="text-[var(--azulescuro)] mb-4 w-40"
+        options={anosDisponiveis}  // array de strings
+        className="w-40 mb-4"
       />
 
       {loading ? (
-        <div className="flex-1 flex items-center justify-center text-[var(--azulescuro)]">
-          Carregando dados...
+        <div className="flex-1 flex justify-center items-center">
+          Carregando...
         </div>
       ) : (
-        <div className="flex-1">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={dados}>
-              <CartesianGrid strokeDasharray="3 3" stroke="var(--azulescuro)" />
-              <XAxis dataKey="nome" stroke="var(--azulescuro)" />
-              <YAxis stroke="var(--azulescuro)" />
-              <Tooltip />
-              <Bar
-                dataKey={dataKey}
-                fill="var(--azulclaro)"
-                barSize={40}
-                radius={[12, 12, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={dados}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="nome" />
+            <YAxis />
+            <Tooltip />
+            <Bar
+              dataKey={dataKey}
+              fill="var(--azulclaro)"
+              barSize={40}
+              radius={[12, 12, 0, 0]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
       )}
     </div>
   );

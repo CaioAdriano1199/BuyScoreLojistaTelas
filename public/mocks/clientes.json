@@ -1,0 +1,22 @@
+
+ [
+  { "mes": 1, "ano": 2024, "quantidadeClientes": 3 },
+  { "mes": 2, "ano": 2024, "quantidadeClientes": 4 },
+  { "mes": 3, "ano": 2024, "quantidadeClientes": 6 },
+  { "mes": 4, "ano": 2024, "quantidadeClientes": 5 },
+  { "mes": 5, "ano": 2024, "quantidadeClientes": 7 },
+  { "mes": 6, "ano": 2024, "quantidadeClientes": 9 },
+  { "mes": 7, "ano": 2024, "quantidadeClientes": 11 },
+  { "mes": 8, "ano": 2024, "quantidadeClientes": 10 },
+  { "mes": 9, "ano": 2024, "quantidadeClientes": 12 },
+  { "mes": 10, "ano": 2024, "quantidadeClientes": 13 },
+  { "mes": 11, "ano": 2024, "quantidadeClientes": 8 },
+  { "mes": 12, "ano": 2024, "quantidadeClientes": 14 },
+
+  { "mes": 1, "ano": 2025, "quantidadeClientes": 2 },
+  { "mes": 2, "ano": 2025, "quantidadeClientes": 3 },
+  { "mes": 3, "ano": 2025, "quantidadeClientes": 4 },
+  { "mes": 12, "ano": 2025, "quantidadeClientes": 1 }
+]
+
+

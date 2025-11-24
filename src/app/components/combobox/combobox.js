@@ -38,15 +38,18 @@ export default function Combobox({
         disableClearable
         options={options}
         onChange={(event, newValue) => onChange?.(newValue)}
-        getOptionLabel={(option) =>
-          typeof option === "string" ? option : option.label
-        }
+        getOptionLabel={(option) => {
+          if (option == null) return "";              
+          if (typeof option === "string") return option;
+          if (typeof option === "number") return option.toString();
+          return option.label ?? "";                   
+        }}
         size="small"
         className={className}
         sx={{
           width: "100%",
           "& .MuiOutlinedInput-root": {
-            borderRadius: "", 
+            borderRadius: "",
             backgroundColor: `${backgroundColor}`,
             color: "black",
             "&:hover .MuiOutlinedInput-notchedOutline": {

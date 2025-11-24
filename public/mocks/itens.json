@@ -1,0 +1,21 @@
+[
+  { "mes": 1, "ano": 2024, "quantidadeCompras": 12 },
+  { "mes": 2, "ano": 2024, "quantidadeCompras": 9 },
+  { "mes": 3, "ano": 2024, "quantidadeCompras": 15 },
+  { "mes": 4, "ano": 2024, "quantidadeCompras": 18 },
+  { "mes": 5, "ano": 2024, "quantidadeCompras": 20 },
+  { "mes": 6, "ano": 2024, "quantidadeCompras": 14 },
+  { "mes": 7, "ano": 2024, "quantidadeCompras": 22 },
+  { "mes": 8, "ano": 2024, "quantidadeCompras": 25 },
+  { "mes": 9, "ano": 2024, "quantidadeCompras": 27 },
+  { "mes": 10, "ano": 2024, "quantidadeCompras": 30 },
+  { "mes": 11, "ano": 2024, "quantidadeCompras": 6 },
+  { "mes": 12, "ano": 2024, "quantidadeCompras": 28 },
+
+  { "mes": 1, "ano": 2025, "quantidadeCompras": 10 },
+  { "mes": 2, "ano": 2025, "quantidadeCompras": 13 },
+  { "mes": 3, "ano": 2025, "quantidadeCompras": 15 },
+  { "mes": 11, "ano": 2025, "quantidadeCompras": 6 }
+]
+
+

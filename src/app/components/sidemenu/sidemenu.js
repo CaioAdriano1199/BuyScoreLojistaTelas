@@ -3,7 +3,7 @@ import { useState } from "react";
 import Button from "../button/button";
 const imageSrc = "/favicon.ico";
 
-//<Button type="button" variant="secondary" onClick={() => onSelect("estatisticas")} aria-current={currentView === "estatisticas" ? "page" : undefined} className="w-full py-5">Estatísticas</Button>
+//
 export default function Sidemenu({ currentView, onSelect }) {
     return (
         <div className="ml-[15%]">
@@ -15,7 +15,7 @@ export default function Sidemenu({ currentView, onSelect }) {
                 <div className="flex flex-col justify-between w-full">
                     <Button type="button" variant="secondary" onClick={() => onSelect("pontuacao")} aria-current={currentView === "pontuacao" ? "page" : undefined} className="w-full py-5">Pontuação</Button>
                     <Button type="button" variant="secondary" className="w-full py-5" onClick={() => onSelect("Loja de pontos")}>Loja de pontos</Button>
-                    
+                    <Button type="button" variant="secondary" onClick={() => onSelect("estatisticas")} aria-current={currentView === "estatisticas" ? "page" : undefined} className="w-full py-5">Estatísticas</Button>
                 </div>
 
                 <Button type="button" variant="secondary" className="w-full py-5" onClick={() => onSelect("perfil")}>Perfil</Button>

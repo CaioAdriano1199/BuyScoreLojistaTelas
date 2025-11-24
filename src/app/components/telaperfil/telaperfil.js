@@ -131,7 +131,7 @@ export default function Telaperfil() {
                 </div>
 
                 <div className="col-span-6">
-                    <span className="cursor-default text-[var(--azulescuro)]">Foto</span>
+                    <span className="cursor-default text-[var(--azulescuro)]">Logo da loja</span>
                     <img src={lojista.fotoUsuario} alt={lojista.nome} className="w-20 h-20 rounded-[6] mt-2" />
                 </div>
             </Card>
