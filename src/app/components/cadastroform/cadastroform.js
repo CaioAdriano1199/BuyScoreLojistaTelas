@@ -8,6 +8,7 @@ import { top100Films, ufs } from "../combobox/comboboxdata";
 import CameraButton from "../CameraButton/CameraButton";
 import Modal from "../modal/modal";
 
+
 export default function CadastroForm() {
   const [razaoSocial, setRazaoSocial] = useState("");
   const [nichoLoja, setNichoLoja] = useState("");
