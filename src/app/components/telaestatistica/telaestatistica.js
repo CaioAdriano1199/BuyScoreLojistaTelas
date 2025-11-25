@@ -12,21 +12,21 @@ export default function Telaestatistica() {
       <div className="flex flex-col gap-10 w-full p-6">
 
         <GraficoColuna
-          titulo="Pontos Usados / Ganhos"
-          dataKey="totalPontosResgatados"
-          url="/mocks/pontos.json"
+          titulo="Pontos Resgatados"
+          dataKey="Pontos"
+          url="http://localhost:3000/ponto/estatisticas/pontos-resgatados"
         />
 
         <GraficoColuna
-          titulo="Novos Clientes"
-          dataKey="quantidadeClientes"
-          url="/mocks/clientes.json"
+          titulo="Clientes Pontuando"
+          dataKey="Clientes"
+          url="http://localhost:3000/ponto/estatisticas"
         />
 
         <GraficoColuna
-          titulo="Itens Vendidos"
-          dataKey="quantidadeCompras"
-          url="/mocks/itens.json"
+          titulo="Itens Resgatados"
+          dataKey="ItensResgatados"
+          url="http://localhost:3000/ponto/estatisticas/compras"
         />
 
       </div>

@@ -23,52 +23,73 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
   ];
 
   // 🔹 Carregar anos disponíveis
-useEffect(() => {
-  async function carregarAnos() {
-    try {
-      const token = localStorage.getItem("token");
-      const r = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const lista = await r.json();
-      const anos = [...new Set(lista.map((d) => d.ano))];
-      setAnosDisponiveis(anos.map(a => a.toString()));
-      if (anos.length > 0) setAnoSelecionado(anos[0]);
-    } catch (err) {
-      console.error("Erro ao carregar anos:", err);
+  useEffect(() => {
+    async function carregarAnos() {
+      try {
+        const token = localStorage.getItem("token");
+
+        const r = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const json = await r.json();
+
+        const lista = Array.isArray(json.info) ? json.info : [];
+
+        const anos = [...new Set(lista.map(d => d.ano))];
+
+        setAnosDisponiveis(anos.map(a => a.toString()));
+
+        if (anos.length > 0) {
+          setAnoSelecionado(anos[0].toString());
+        }
+
+      } catch (err) {
+        console.error("Erro ao carregar anos:", err);
+      }
     }
-  }
-  carregarAnos();
-}, [url]);
 
-  // 🔹 Carregar dados ao trocar ano
-useEffect(() => {
-  if (!anoSelecionado) return;
+    carregarAnos();
+  }, [url]);
 
-  async function carregarDados() {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("token");
-      const r = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const lista = await r.json();
+  // 🔹 Carregar dados do ano selecionado
+  useEffect(() => {
+    if (!anoSelecionado) return;
 
-      const filtrado = lista.filter(item => item.ano == anoSelecionado);
-      const mapaMes = {};
-      filtrado.forEach(item => { mapaMes[item.mes] = item[dataKey] ?? 0 });
+    async function carregarDados() {
+      setLoading(true);
 
-      const formatado = mesesBase.map((mes, i) => ({
-        nome: mes,
-        [dataKey]: mapaMes[i + 1] ?? 0,
-      }));
-      setDados(formatado);
-    } catch (e) {
-      console.error("Erro ao carregar dados:", e);
-    } finally {
-      setLoading(false);
+      try {
+        const token = localStorage.getItem("token");
+
+        const r = await fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const json = await r.json();
+
+        const lista = Array.isArray(json.info) ? json.info : [];
+
+        const filtrado = lista.filter(item => item.ano == anoSelecionado);
+
+        const mapaMes = {};
+        filtrado.forEach(item => {
+          mapaMes[item.mes] = item[dataKey] ?? 0;
+        });
+
+        const formatado = mesesBase.map((mes, i) => ({
+          nome: mes,
+          [dataKey]: mapaMes[i + 1] ?? 0
+        }));
+
+        setDados(formatado);
+
+      } catch (e) {
+        console.error("Erro ao carregar dados:", e);
+      } finally {
+        setLoading(false);
+      }
     }
-  }
 
     carregarDados();
   }, [anoSelecionado, url]);
@@ -83,7 +104,7 @@ useEffect(() => {
         label="Ano"
         value={anoSelecionado}
         onChange={(novoAno) => setAnoSelecionado(novoAno)}
-        options={anosDisponiveis}  // array de strings
+        options={anosDisponiveis}
         className="w-40 mb-4"
       />
 
