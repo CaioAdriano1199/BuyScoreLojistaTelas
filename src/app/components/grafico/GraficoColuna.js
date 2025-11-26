@@ -60,7 +60,6 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
     carregarAnos();
   }, [url]);
 
-  // 🔹 Carregar dados do ano selecionado
   useEffect(() => {
     if (!anoSelecionado || !anoSelecionado.value) return;
 
@@ -118,7 +117,7 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
 
       {loading ? (
         <div className="flex-1 flex justify-center items-center">
-          Carregando...
+          Nem um dado para exibir.
         </div>
       ) : (
         <ResponsiveContainer width="100%" height="100%">
