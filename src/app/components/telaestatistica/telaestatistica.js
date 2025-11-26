@@ -13,19 +13,19 @@ export default function Telaestatistica() {
 
         <GraficoColuna
           titulo="Pontos Resgatados"
-          dataKey="Pontos"
+          dataKey="totalPontosResgatados"
           url="http://localhost:3000/ponto/estatisticas/pontos-resgatados"
         />
 
         <GraficoColuna
           titulo="Clientes Pontuando"
-          dataKey="Clientes"
+          dataKey="quantidadeClientes"
           url="http://localhost:3000/ponto/estatisticas"
         />
 
         <GraficoColuna
           titulo="Itens Resgatados"
-          dataKey="ItensResgatados"
+          dataKey="quantidadeCompras"
           url="http://localhost:3000/ponto/estatisticas/compras"
         />
 

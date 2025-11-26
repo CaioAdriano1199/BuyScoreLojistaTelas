@@ -36,12 +36,20 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
 
         const lista = Array.isArray(json.info) ? json.info : [];
 
-        const anos = [...new Set(lista.map(d => d.ano))];
+        const anos = [...new Set(lista.map(d => d.ano))].sort((a, b) => b - a);
 
-        setAnosDisponiveis(anos.map(a => a.toString()));
+        const anosFormatados = anos.map(a => ({
+          value: a.toString(),
+          label: a.toString()
+        }));
+
+        setAnosDisponiveis(anosFormatados);
 
         if (anos.length > 0) {
-          setAnoSelecionado(anos[0].toString());
+          setAnoSelecionado({
+            value: anos[0].toString(),
+            label: anos[0].toString()
+          });
         }
 
       } catch (err) {
@@ -54,7 +62,7 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
 
   // 🔹 Carregar dados do ano selecionado
   useEffect(() => {
-    if (!anoSelecionado) return;
+    if (!anoSelecionado || !anoSelecionado.value) return;
 
     async function carregarDados() {
       setLoading(true);
@@ -70,7 +78,7 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
 
         const lista = Array.isArray(json.info) ? json.info : [];
 
-        const filtrado = lista.filter(item => item.ano == anoSelecionado);
+        const filtrado = lista.filter(item => item.ano == anoSelecionado.value);
 
         const mapaMes = {};
         filtrado.forEach(item => {
@@ -92,7 +100,7 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
     }
 
     carregarDados();
-  }, [anoSelecionado, url]);
+  }, [anoSelecionado, url, dataKey]);
 
   return (
     <div className="w-full h-[400px] bg-[var(--branco)] p-4 shadow-md flex flex-col rounded-xl">
