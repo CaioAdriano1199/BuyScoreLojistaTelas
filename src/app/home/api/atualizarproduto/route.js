@@ -1,4 +1,4 @@
-import { bffRequest } from "@/lib/api";
+import { bffRequest } from "../../../../lib/api";
 
 export async function PUT(req) {
   try {

@@ -41,6 +41,49 @@ async function buscarMeuComercio() {
     return data;
 }
 
+// Função auxiliar para mapear resposta do BFF para formato esperado pela tela
+function mapearComercio(res) {
+    if (!res || !res.sucesso || !res.comercio) return {};
+
+    // Log full response for debugging (trimmed when large)
+    // Debug logging removed in production
+
+    // Two possible shapes observed from BFF:
+    // 1) { comercio: { usuario: { endereco: { ... } }, ... } }
+    // 2) { comercio: { cep, logradouro, bairro, cidade, numero, uf, ... } }
+    const comercio = res.comercio || {};
+    const usuario = comercio.usuario || {};
+    const enderecoFromUsuario = usuario.endereco || {};
+
+    // If address exists directly on comercio, prefer those values, otherwise use usuario.endereco
+    const endereco = {
+        cep: comercio.cep ?? enderecoFromUsuario.cep,
+        logradouro: comercio.logradouro ?? enderecoFromUsuario.logradouro,
+        complemento: comercio.complemento ?? enderecoFromUsuario.complemento,
+        bairro: comercio.bairro ?? enderecoFromUsuario.bairro,
+        cidade: comercio.cidade ?? enderecoFromUsuario.cidade,
+        numero: comercio.numero ?? enderecoFromUsuario.numero,
+        uf: comercio.uf ?? enderecoFromUsuario.uf,
+    };
+
+    
+
+    return {
+        // commerce-level fields (razaoSocial, seguimento, etc.)
+        ...comercio,
+        // user-level fields (nome, email, fotoUsuario, etc.) override comercio where present
+        ...usuario,
+        // Ensure address fields are available at top level for the UI
+        cep: endereco.cep || "",
+        logradouro: endereco.logradouro || "",
+        complemento: endereco.complemento || "",
+        bairro: endereco.bairro || "",
+        cidade: endereco.cidade || "",
+        numero: endereco.numero || "",
+        uf: endereco.uf || "",
+    };
+}
+
 
 export default function Telaperfil() {
     const [lojista, setlojista] = useState({});
@@ -66,7 +109,8 @@ export default function Telaperfil() {
     useEffect(() => {
         buscarMeuComercio().then((res) => {
             if (res.sucesso) {
-                setlojista(res.comercio);
+                const comercioAtualizado = mapearComercio(res);
+                setlojista(comercioAtualizado);
             }
         });
     }, []);
@@ -274,8 +318,10 @@ export default function Telaperfil() {
                     onClick={async () => {
                         try {
                             const res = await atualizarComercio(lojista);
+                            
                             if (res.sucesso) {
-                                setlojista(res.comercio);
+                                const comercioAtualizado = mapearComercio(res);
+                                setlojista(comercioAtualizado);
                                 setIsModalOpen(false);
                                 setMensagem("Perfil atualizado com sucesso!");
                                 setIsModalmensagemOpen(true);
@@ -284,7 +330,7 @@ export default function Telaperfil() {
                                 setIsModalmensagemOpen(true);
                             }
                         } catch (err) {
-                            console.error(err);
+                            console.error("❌ Erro:", err);
                             setMensagem("Erro de comunicação com o servidor");
                             setIsModalmensagemOpen(true);
                         }

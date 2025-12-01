@@ -33,7 +33,6 @@ export default function Telapontuacao() {
     setIsModalOpen(true);
 
   } catch (e) {
-    console.error(e);
     alert("Erro ao gerar pontuação");
   }
 };

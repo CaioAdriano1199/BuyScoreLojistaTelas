@@ -66,7 +66,6 @@ export default function Telalojapontos() {
       setNovoProduto({ nome: "", pontos: "", descricao: "", imagem: null });
       setReloadKey(prev => prev + 1);
     } catch (e) {
-      console.error(e);
       modalconfirma("Erro ao criar produto");
     }
   };

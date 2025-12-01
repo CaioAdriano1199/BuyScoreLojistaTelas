@@ -53,7 +53,7 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
         }
 
       } catch (err) {
-        console.error("Erro ao carregar anos:", err);
+        // erro silencioso em produção
       }
     }
 
@@ -92,7 +92,7 @@ export default function GraficoColuna({ titulo, dataKey, url }) {
         setDados(formatado);
 
       } catch (e) {
-        console.error("Erro ao carregar dados:", e);
+        // erro silencioso em produção
       } finally {
         setLoading(false);
       }

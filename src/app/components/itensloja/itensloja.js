@@ -21,9 +21,10 @@ export default function Itensloja({ tipo, searchTerm, token }) {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
-      setProdutos(dados.produtos || []);
+      const produtosArray = Array.isArray(dados?.produtos) ? dados.produtos : [];
+      setProdutos(produtosArray);
     } catch (error) {
-      console.error("Erro ao carregar produtos:", error);
+        modalconfirma("Erro ao carregar produtos");
       setProdutos([]);
     }
   };
@@ -53,8 +54,7 @@ export default function Itensloja({ tipo, searchTerm, token }) {
 
       modalconfirma("Produto atualizado com sucesso!");
     } catch (error) {
-      console.error("Erro ao atualizar produto:", error);
-      modalconfirma(error.message || "Erro ao atualizar produto");
+        modalconfirma(error.message || "Erro ao atualizar produto");
     }
   };
 
@@ -70,8 +70,7 @@ export default function Itensloja({ tipo, searchTerm, token }) {
         prev.map((p) => (p.id === id ? { ...p, ativo: ativar } : p))
       );
     } catch (error) {
-      console.error("Erro ao alterar status do produto:", error);
-      modalconfirma(error.message || "Erro ao alterar status do produto");
+        modalconfirma(error.message || "Erro ao alterar status do produto");
     }
   };
 
@@ -86,8 +85,7 @@ export default function Itensloja({ tipo, searchTerm, token }) {
       setProdutos((prev) => prev.filter((p) => p.id !== id));
       modalconfirma("Produto removido com sucesso!");
     } catch (error) {
-      console.error("Erro ao excluir produto:", error);
-      modalconfirma(error.message || "Erro ao excluir produto");
+        modalconfirma(error.message || "Erro ao excluir produto");
     }
   };
 

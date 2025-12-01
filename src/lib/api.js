@@ -9,11 +9,17 @@ export async function bffRequest(path, options = {}) {
     ...options,
   });
 
-  const data = await res.json().catch(() => ({}));
-
-  if (!res.ok) {
-    throw new Error(data.mensagem || "Erro ao conectar ao servidor");
+  let data = {};
+  try {
+    data = await res.json();
+  } catch (err) {
+    data = {};
   }
 
-  return data;
+  if (!res.ok) {
+    throw new Error(data?.mensagem || data?.message || "Erro ao conectar ao servidor");
+  }
+
+  // Garante que sempre retorna um objeto, nunca undefined ou null
+  return data || {};
 }

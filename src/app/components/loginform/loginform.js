@@ -26,10 +26,8 @@ export default function LoginForm() {
       const data = await res.json();
 
       if (data.sucesso) {
-        console.log("Login realizado com sucesso!");
         setLblock(true);
         setLoading("Carregando...");
-        console.log("Token:", data.token);
         localStorage.setItem("token", data.token);
         router.push("/home");
       } else {
