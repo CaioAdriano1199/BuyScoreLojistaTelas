@@ -5,7 +5,7 @@ export async function POST(req) {
 
   try {
     const payload = {
-      amount: 10000,
+      amount: 1000,
       customer: {
         id: body.customerId,
         name: body.customerName,
